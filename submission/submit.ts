@@ -30,9 +30,12 @@ function replace(content: string): string {
 function replaceFile(inputPath: string, outputPath: string) {
   const content = fs.readFileSync(inputPath, "utf-8");
   const replacedContent = replace(content);
-  const parent = outputPath.slice(0, outputPath.lastIndexOf("/"));
-  if (parent && !fs.existsSync(parent)) {
-    fs.mkdirSync(parent, { recursive: true });
+  const i = outputPath.lastIndexOf("/");
+  if (i >= 0) {
+    const dir = outputPath.slice(0, i);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
   }
   fs.writeFileSync(outputPath, replacedContent, "utf-8");
 }
